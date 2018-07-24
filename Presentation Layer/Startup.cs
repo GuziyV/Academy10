@@ -8,7 +8,6 @@ using Data_Access_Layer.Interfaces;
 using Data_Access_Layer.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.SpaServices.AngularCli;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -34,11 +33,6 @@ namespace Presentation_Layer
             var mapper = MapperConfiguration().CreateMapper();
             services.AddAutoMapper();
 
-            services.AddSpaStaticFiles(configuration =>
-            {
-                configuration.RootPath = "ClientApp/dist";
-            });
-
             services.AddDbContext<AirportContext>(options =>
         options.UseSqlServer(Configuration.GetConnectionString("AirportConnectionString"), b => b.MigrationsAssembly("Presentation Layer")));
 
@@ -53,27 +47,12 @@ namespace Presentation_Layer
                 app.UseDeveloperExceptionPage();
             }
             app.UseMvc();
-
-            app.UseHttpsRedirection();
+            app.UseDefaultFiles();
             app.UseStaticFiles();
-            app.UseSpaStaticFiles();
-
-            app.UseHttpsRedirection();
-            app.UseMvc();
-
-            app.UseSpa(spa =>
-            {
-                spa.Options.SourcePath = "ClientApp";
-
-                if (env.IsDevelopment())
-                {
-                    spa.UseAngularCliServer(npmScript: "start");
-                }
-            });
 
             AirportDbInitializer.Initialize(context).Wait();
         }
-
+        
         public MapperConfiguration MapperConfiguration()
         {
             var config = MyMapperConfiguration.GetConfiguration();
