@@ -1,0 +1,27 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="CreateUpdateTests.cs~RF13e005b1.TMP" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="FakeItEasy" Version="4.7.1" />
+    <PackageReference Include="FluentValidation" Version="7.6.104" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.8.0" />
+    <PackageReference Include="Ninject" Version="3.3.4" />
+    <PackageReference Include="NUnit" Version="3.10.1" />
+    <PackageReference Include="NUnit3TestAdapter" Version="3.10.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Business Layer\Business Layer.csproj" />
+    <ProjectReference Include="..\Data Access Layer\Data Access Layer.csproj" />
+    <ProjectReference Include="..\Presentation Layer\Presentation Layer.csproj" />
+    <ProjectReference Include="..\Shared\Shared.csproj" />
+  </ItemGroup>
+
+</Project>

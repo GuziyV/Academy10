@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="7.0.1" />
+    <PackageReference Include="EntityFrameworkCore.RawSQLExtensions" Version="1.0.0.12" />
+    <PackageReference Include="FluentValidation" Version="7.6.104" />
+    <PackageReference Include="Microsoft.AspNetCore" Version="2.1.2" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Analyzers" Version="2.1.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Data Access Layer\Data Access Layer.csproj" />
+    <ProjectReference Include="..\Shared\Shared.csproj" />
+  </ItemGroup>
+
+</Project>
