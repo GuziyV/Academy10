@@ -30,7 +30,7 @@ namespace Presentation_Layer.Controllers
         [HttpGet]
         public async Task<IEnumerable<FlightDTO>> Get()
         {
-            return  _mapper.Map<IEnumerable<Flight>, IEnumerable<FlightDTO>>(await _service.GetFlightWithTimer());
+            return  _mapper.Map<IEnumerable<Flight>, IEnumerable<FlightDTO>>(await _service.GetAll<Flight>());
         }
 
         // GET api/flights/id

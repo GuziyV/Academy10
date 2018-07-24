@@ -19,12 +19,18 @@ namespace Data_Access_Layer.DbInitializer
 
         static public async Task Initialize(AirportContext context)
         {
-            await context.Database.MigrateAsync(); 
-            
-            if(context.Flights.Any())
-            { 
+            await context.Database.EnsureCreatedAsync();
+
+            if (context.Flights.Any())
+            {
                 return; //already seeded
             }
+           // await context.Database.MigrateAsync(); 
+            
+            /*if(context.Flights.Any())
+            { 
+                return; //already seeded
+            }*/
             
             List<Pilot> pilots = new List<Pilot>()
             {

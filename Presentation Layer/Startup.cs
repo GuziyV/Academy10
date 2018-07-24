@@ -8,6 +8,8 @@ using Data_Access_Layer.Interfaces;
 using Data_Access_Layer.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Cors.Internal;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -30,12 +32,30 @@ namespace Presentation_Layer
             services.AddScoped<IUnitOfWork, AirportUnitOfWork>();
             services.AddScoped<AirportService>();
             services.AddMvc();
+            //services.AddCors();
             var mapper = MapperConfiguration().CreateMapper();
             services.AddAutoMapper();
+            /* services.AddCors();
+             services.AddCors(options => {
+                 options.AddPolicy("CorsPolicy",
+                     builder => builder.AllowAnyOrigin()
+                     .AllowAnyMethod()
+                     .AllowAnyHeader()
+                     .AllowCredentials());
+             });*/
 
             services.AddDbContext<AirportContext>(options =>
         options.UseSqlServer(Configuration.GetConnectionString("AirportConnectionString"), b => b.MigrationsAssembly("Presentation Layer")));
 
+           /* services.AddCors(options =>
+            {
+                options.AddPolicy("AllowAllOrigin", builder => builder.AllowAnyOrigin());
+            });
+            services.Configure<MvcOptions>(options =>
+            {
+                options.Filters.Add(new CorsAuthorizationFilterFactory("AllowAllOrigin"));
+            });
+            */
 
         }
 
@@ -46,9 +66,11 @@ namespace Presentation_Layer
             {
                 app.UseDeveloperExceptionPage();
             }
+
+            app.UseCors(builder => builder.WithOrigins("http://localhost:4200").AllowCredentials().AllowAnyHeader().AllowAnyMethod());
+
             app.UseMvc();
-            app.UseDefaultFiles();
-            app.UseStaticFiles();
+
 
             AirportDbInitializer.Initialize(context).Wait();
         }
