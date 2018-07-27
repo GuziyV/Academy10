@@ -53,6 +53,10 @@ namespace Presentation_Layer.Controllers
         [HttpPost]
         public async Task<HttpResponseMessage> Post([FromBody]CrewDTO crew)
         {
+            foreach(var st in crew.Stewardesses)
+            {
+                st.CrewId = crew.Id;
+            }
             if(ModelState.IsValid && crew != null && validator.Validate(crew).IsValid)
             {
                 await _service.Post<Crew>(_mapper.Map<CrewDTO, Crew>(crew));
