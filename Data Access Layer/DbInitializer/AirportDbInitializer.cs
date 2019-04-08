@@ -25,12 +25,7 @@ namespace Data_Access_Layer.DbInitializer
             {
                 return; //already seeded
             }
-           // await context.Database.MigrateAsync(); 
-            
-            /*if(context.Flights.Any())
-            { 
-                return; //already seeded
-            }*/
+
             
             List<Pilot> pilots = new List<Pilot>()
             {

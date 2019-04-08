@@ -27,14 +27,6 @@ namespace Presentation_Layer.Controllers
             _mapper = mapper;       
         }
 
-        // GET api/crews/task3
-        [HttpGet]
-        [Route("task3")]
-        public async Task<string> GetCrews()
-        {
-            return await _service.DownloadTenCrews();
-        }
-
         // GET api/crews
         [HttpGet]
         public async Task<IEnumerable<CrewDTO>> Get()
