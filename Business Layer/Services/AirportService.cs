@@ -1,20 +1,10 @@
 using Business_Layer.Interfaces;
-using Data_Access_Layer;
 using Data_Access_Layer.Interfaces;
-using Data_Access_Layer.Models;
-using Newtonsoft.Json;
-using Shared.JsonObjects;
-using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Net.Http;
 using System.Threading.Tasks;
-using System.Timers;
 
-namespace Business_Layer.Services
-{
-    public class AirportService : IService
+namespace Business_Layer.Services {
+	public class AirportService : IService
     {
 
         private readonly IUnitOfWork _unitOfWork;
