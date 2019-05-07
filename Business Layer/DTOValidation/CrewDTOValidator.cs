@@ -1,6 +1,6 @@
 ﻿using Data_Access_Layer.Models;
 using FluentValidation;
-using Shared.DTOs;
+using Shared.DTos;
 using System;
 using System.Collections.Generic;
 using System.Text;

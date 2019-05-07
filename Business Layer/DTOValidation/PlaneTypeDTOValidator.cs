@@ -1,6 +1,6 @@
 ﻿using Data_Access_Layer.Models;
 using FluentValidation;
-using Shared.DTOs;
+using Shared.DTos;
 
 namespace Business_Layer.DTOValidation
 {

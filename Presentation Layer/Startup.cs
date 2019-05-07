@@ -1,4 +1,6 @@
 ﻿using AutoMapper;
+using BL.Helpers;
+using BL.Services;
 using Business_Layer.MyMapperConfiguration;
 using Business_Layer.Services;
 using Data_Access_Layer;
@@ -6,6 +8,7 @@ using Data_Access_Layer.Contexts;
 using Data_Access_Layer.DbInitializer;
 using Data_Access_Layer.Interfaces;
 using Data_Access_Layer.Models;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -13,7 +16,9 @@ using Microsoft.AspNetCore.Mvc.Cors.Internal;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Shared.DTOs;
+using Microsoft.IdentityModel.Tokens;
+using Shared.DTos;
+using System.Text;
 
 namespace Presentation_Layer
 {
@@ -31,54 +36,61 @@ namespace Presentation_Layer
         {
             services.AddScoped<IUnitOfWork, AirportUnitOfWork>();
             services.AddScoped<AirportService>();
-            services.AddMvc();
-            //services.AddCors();
-            var mapper = MapperConfiguration().CreateMapper();
-            services.AddAutoMapper();
-            /* services.AddCors();
-             services.AddCors(options => {
-                 options.AddPolicy("CorsPolicy",
-                     builder => builder.AllowAnyOrigin()
-                     .AllowAnyMethod()
-                     .AllowAnyHeader()
-                     .AllowCredentials());
-             });*/
+            services.AddScoped<UserService>();
+			services.AddMvc();
+			services.AddScoped<IMapper>(sp => MyMapperConfiguration.GetConfiguration());
 
-            services.AddDbContext<AirportContext>(options =>
+
+			services.AddDbContext<AirportContext>(options =>
         options.UseSqlServer(Configuration.GetConnectionString("AirportConnectionString"), b => b.MigrationsAssembly("Presentation Layer")));
 
-           /* services.AddCors(options =>
-            {
-                options.AddPolicy("AllowAllOrigin", builder => builder.AllowAnyOrigin());
-            });
-            services.Configure<MvcOptions>(options =>
-            {
-                options.Filters.Add(new CorsAuthorizationFilterFactory("AllowAllOrigin"));
-            });
-            */
 
-        }
+            // configure strongly typed settings objects
+            var appSettingsSection = Configuration.GetSection("AppSettings");
+            services.Configure<AppSettings>(appSettingsSection);
+
+            // configure jwt authentication
+            var appSettings = appSettingsSection.Get<AppSettings>();
+            var key = Encoding.ASCII.GetBytes(appSettings.Secret);
+            services.AddAuthentication(x => {
+		            x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+		            x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+	            })
+	            .AddJwtBearer(x => {
+		            x.RequireHttpsMetadata = false;
+		            x.SaveToken = true;
+		            x.TokenValidationParameters = new TokenValidationParameters {
+			            ValidateIssuerSigningKey = true,
+			            IssuerSigningKey = new SymmetricSecurityKey(key),
+			            ValidateIssuer = false,
+			            ValidateAudience = false
+		            };
+	            });
+
+            // Cors
+            services.AddCors(o => o.AddPolicy("MyPolicy", builder => {
+	            builder.WithOrigins("http://localhost:8080")
+		            .AllowAnyMethod()
+		            .AllowAnyHeader()
+		            .AllowCredentials();
+            }));
+
+		}
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, AirportContext context)
         {
-            if (env.IsDevelopment())
+			if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
             }
-
-            app.UseCors(builder => builder.WithOrigins("http://localhost:4200").AllowCredentials().AllowAnyHeader().AllowAnyMethod());
-
-            app.UseMvc();
+			app.UseCors("MyPolicy");
+			app.UseAuthentication();
+			app.UseHttpsRedirection();
+			app.UseMvc();
 
 
             AirportDbInitializer.Initialize(context).Wait();
-        }
-        
-        public MapperConfiguration MapperConfiguration()
-        {
-            var config = MyMapperConfiguration.GetConfiguration();
-            return config;
         }
     }
 }

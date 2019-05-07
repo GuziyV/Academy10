@@ -8,7 +8,7 @@ using Business_Layer.Services;
 using Data_Access_Layer.Interfaces;
 using Data_Access_Layer.Models;
 using Microsoft.AspNetCore.Mvc;
-using Shared.DTOs;
+using Shared.DTos;
 
 namespace Presentation_Layer.Controllers
 {

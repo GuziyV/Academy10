@@ -7,7 +7,7 @@ using Data_Access_Layer.Interfaces;
 using Data_Access_Layer.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
-using Shared.DTOs;
+using Shared.DTos;
 using Business_Layer.DTOValidation;
 using System.Threading.Tasks;
 

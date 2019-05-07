@@ -3,7 +3,7 @@ using Business_Layer.MyMapperConfiguration;
 using Business_Layer.Services;
 using NUnit.Framework;
 using Presentation_Layer.Controllers;
-using Shared.DTOs;
+using Shared.DTos;
 using System;
 using System.Collections.Generic;
 using System.Net;

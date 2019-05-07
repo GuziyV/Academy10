@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using DAL.Models;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace Data_Access_Layer.Contexts
@@ -24,6 +25,7 @@ namespace Data_Access_Layer.Contexts
         public virtual DbSet<PlaneType> PlaneTypes { get; set; }
         public virtual DbSet<Stewardess> Stewardesses { get; set; }
         public virtual DbSet<Ticket> Tickets { get; set; }
+        public virtual DbSet<User> Users { get; set; }
 
-    }
+	}
 }
